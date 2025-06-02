@@ -104,5 +104,10 @@ async def send_file(update, numbers, fmt):
         await update.message.reply_document(document=InputFile(output, filename="contacts.vcf"))
 
     await update.message.reply_text(f"✅ মোট {len(numbers)}টি নাম্বার ফরম্যাট করা হয়েছে।")
+    try:
+    df = pd.read_csv(file_bytes, header=None)
+except Exception as e:
+    await update.message.reply_text("❌ ফাইল পড়া যায়নি, দয়া করে ফরম্যাট চেক করুন।")
+    return
 
 
