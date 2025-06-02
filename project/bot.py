@@ -58,3 +58,25 @@ await update.message.reply_document(document=open(export_file, "rb"))
 
 cleanup_file(file_path)
 cleanup_file(export_file)
+
+✅ Final Version of bot.py
+
+import logging import os import re import phonenumbers import pandas as pd from aiogram import Bot, Dispatcher, executor, types from aiogram.types import InputFile from io import BytesIO
+
+API_TOKEN = 'YOUR_BOT_TOKEN_HERE'  # 🔁 Replace with your actual bot token logging.basicConfig(level=logging.INFO) bot = Bot(token=API_TOKEN) dp = Dispatcher(bot)
+
+user_settings = {}
+
+def get_user_settings(uid): if uid not in user_settings: user_settings[uid] = { "country_code": "BD", "format": "xlsx", "start": 1, "end": None } return user_settings[uid]
+
+def extract_numbers(text): return re.findall(r'+?\d{7,15}', text)
+
+def format_number(number, country_code="BD"): try: parsed = phonenumbers.parse(number, country_code) if phonenumbers.is_valid_number(parsed): return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164) except: pass return None
+
+def process_numbers(numbers, country_code): formatted = set() for number in numbers: num = format_number(number, country_code) if num: formatted.add(num) return sorted(list(formatted))
+
+def export_to_file(numbers, format): output = BytesIO() if format == "xlsx": df = pd.DataFrame({"Phone Numbers": numbers}) df.to_excel(output, index=False) output.seek(0) return output, "output.xlsx" elif format == "csv": df = pd.DataFrame({"Phone Numbers": numbers}) df.to_csv(output, index=False) output.seek(0) return output, "output.csv" elif format == "txt": output.write("\n".join(numbers).encode()) output.seek(0) return output, "output.txt" elif format == "vcf": vcf_data = "" for i, number in enumerate(numbers): vcf_data += f"BEGIN:VCARD\nVERSION:3.0\nFN:Contact {i+1}\nTEL:{number}\nEND:VCARD\n" output.write(vcf_data.encode()) output.seek(0) return output, "contacts.vcf" return None, None
+
+@dp.message_handler(commands=['start']) async def start_handler(message: types.Message): get_user_settings(message.from_user.id) await message.reply("👋 নমস্কার! নম্বর ফরম্যাটার বটে আপনাকে স্বাগতম! ফাইল পাঠান অথবা /help লিখুন।")
+
+@dp.message_handler(commands=['help']) async def help_handler(message: types.Message): await message.reply("""📌 কমান্ডসমূহ: /country BD বা US বা IN /format xlsx
