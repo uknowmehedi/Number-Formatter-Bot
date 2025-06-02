@@ -20,7 +20,6 @@ def format_number(number, code):
 def extract_numbers_from_text(text):
     return re.findall(r'\d{7,15}', text)
 
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
     user_settings.setdefault(uid, {'lang': 'bn', 'code': '+880', 'range': (1, 100000), 'format': 'xlsx'})
@@ -32,7 +31,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     "- /format xlsx, txt, csv, vcf\n"
 )
 
-
 async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
     lang = context.args[0].lower() if context.args else 'bn'
@@ -42,7 +40,6 @@ async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("✅ ভাষা পরিবর্তন হয়েছে।" if lang == 'bn' else "✅ Language changed.")
     else:
         await update.message.reply_text("❌ Only 'en' or 'bn' allowed.")
-
 
 async def set_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
@@ -55,7 +52,6 @@ async def set_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"✅ দেশ কোড সেট করা হয়েছে: {code}")
     else:
         await update.message.reply_text("❌ সঠিক কোড দিন। যেমন: /setcode +880")
-
 
 async def set_range(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
@@ -70,7 +66,6 @@ async def set_range(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text("❌ সঠিকভাবে লিখুন: /setrange 1 100")
 
-
 async def set_format(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
     if context.args:
@@ -83,7 +78,6 @@ async def set_format(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("❌ ফরম্যাট হতে হবে: xlsx, txt, csv, vcf")
     else:
         await update.message.reply_text("❌ উদাহরণ: /format xlsx")
-
 
 async def process_and_send(update: Update, numbers, settings):
     numbers = list(dict.fromkeys(numbers))
@@ -122,13 +116,11 @@ async def process_and_send(update: Update, numbers, settings):
     await update.message.reply_document(InputFile(file))
     await update.message.reply_text(f"✅ মোট {len(formatted)}টি নাম্বার ফরম্যাট করা হয়েছে।")
 
-
 async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
     settings = user_settings.get(uid, {'code': '+880', 'range': (1, 100000), 'format': 'xlsx'})
     numbers = extract_numbers_from_text(update.message.text)
     await process_and_send(update, numbers, settings)
-
 
 async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
@@ -153,7 +145,6 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     except Exception as e:
         await update.message.reply_text(f"⚠️ সমস্যা হয়েছে: {str(e)}")
-
 
 def main():
     ApplicationBuilder().token("YOUR_BOT_TOKEN").build()
