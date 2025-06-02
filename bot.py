@@ -45,8 +45,10 @@ async def set_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
     code = context.args[0] if context.args else '+880'
     if code.startswith('+') and code[1:].isdigit():
-        user_settings.setdefault(uid, {'lang': 'bn', 'code': '+880', 'range': (1, 100000), 'format': 'xlsx'})
-        user_settings[uid]['code'] = code
+        def get_user_settings(uid):
+    if uid not in user_settings:
+        user_settings[uid] = {'lang': 'bn', 'code': '+880', 'range': (1, 100000), 'format': 'xlsx'}
+    return user_settings[uid]['code'] = code
         await update.message.reply_text(f"✅ দেশ কোড সেট করা হয়েছে: {code}")
     else:
         await update.message.reply_text("❌ সঠিক কোড দিন। যেমন: /setcode +880")
