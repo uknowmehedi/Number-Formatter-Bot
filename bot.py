@@ -110,4 +110,13 @@ except Exception as e:
     await update.message.reply_text("❌ ফাইল পড়া যায়নি, দয়া করে ফরম্যাট চেক করুন।")
     return
 
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+
+async def language(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        [InlineKeyboardButton("বাংলা", callback_data='lang_bn')],
+        [InlineKeyboardButton("English", callback_data='lang_en')],
+    ]
+    await update.message.reply_text("ভাষা বেছে নিন:", reply_markup=InlineKeyboardMarkup(keyboard))
+
 
