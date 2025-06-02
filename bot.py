@@ -25,13 +25,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_settings.setdefault(uid, {'lang': 'bn', 'code': '+880', 'range': (1, 100000), 'format': 'xlsx'})
     await update.message.reply_text(
     "👋 হ্যালো! আমি নাম্বার ফরম্যাট করব। আপনি:
-"
+    "
     "- /setcode +91
-"
+    "
     "- /setrange 1 100
-"
+    "
     "- /language en বা bn
-"
+    "
     "- /format xlsx, txt, csv, vcf"
 )
 
