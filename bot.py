@@ -145,7 +145,7 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"⚠️ সমস্যা হয়েছে: {str(e)}")
 
 def main():
-    app = ApplicationBuilder().token("8190564918:AAFiHD6O7u6jqkxMIfVwjyikYst7UCzI3EI").build()
+    app = ApplicationBuilder().token("Your_Bot_Token").build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("language", set_language))
     app.add_handler(CommandHandler("setcode", set_code))
