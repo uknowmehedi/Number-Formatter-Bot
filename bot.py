@@ -23,16 +23,12 @@ def extract_numbers_from_text(text):
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uid = update.effective_user.id
     user_settings.setdefault(uid, {'lang': 'bn', 'code': '+880', 'range': (1, 100000), 'format': 'xlsx'})
-    await update.message.reply_text(
-    "👋 হ্যালো! আমি নাম্বার ফরম্যাট করব। আপনি:
-    "
-    "- /setcode +91
-    "
-    "- /setrange 1 100
-    "
-    "- /language en বা bn
-    "
-    "- /format xlsx, txt, csv, vcf"
+   await update.message.reply_text(
+    "👋 হ্যালো! আমি নাম্বার ফরম্যাট করব। আপনি:\n"
+    "- /setcode +91\n"
+    "- /setrange 1 100\n"
+    "- /language en বা bn\n"
+    "- /format xlsx, txt, csv, vcf\n"
 )
 
 async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
